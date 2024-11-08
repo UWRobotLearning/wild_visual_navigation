@@ -1,7 +1,7 @@
 camera_topics:
   front:
-    image_topic: "/depth_camera/color/image_raw"
-    info_topic: "/depth_camera/color/camera_info"
+    image_topic: "/spot/camera/hand_color/image"
+    info_topic: "/spot/camera/hand_color/camera_info"
     use_for_training: true
     publish_confidence: true
     publish_input_image: true

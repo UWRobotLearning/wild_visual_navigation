@@ -10,20 +10,20 @@ from wild_visual_navigation_msgs.msg import RobotState, CustomState
 import rospy
 
 
-def jackal_msg_callback(jackal_state, return_msg=False):
+def spot_msg_callback(spot_state, return_msg=False):
     robot_state_msg = RobotState()
 
     # For RobotState msg
-    robot_state_msg.header = jackal_state.header
+    robot_state_msg.header = spot_state.header
 
     # Extract pose
-    robot_state_msg.pose.header = jackal_state.header
-    robot_state_msg.pose.pose = jackal_state.pose.pose
+    robot_state_msg.pose.header = spot_state.header
+    robot_state_msg.pose.pose = spot_state.pose.pose
 
     # Extract twist
-    robot_state_msg.twist.header = jackal_state.header
-    robot_state_msg.twist.header.frame_id = jackal_state.child_frame_id
-    robot_state_msg.twist.twist = jackal_state.twist.twist
+    robot_state_msg.twist.header = spot_state.header
+    robot_state_msg.twist.header.frame_id = spot_state.child_frame_id
+    robot_state_msg.twist.twist = spot_state.twist.twist
 
     vector_state = CustomState()
     vector_state.name = "vector_state"
@@ -67,15 +67,15 @@ def twist_msg_callback(msg):
 
 
 if __name__ == "__main__":
-    rospy.init_node("jackal_state_converter_node")
+    rospy.init_node("spot_state_converter_node")
 
     # We subscribe the odometry topic (state)
-    jackal_state_sub = rospy.Subscriber("/odometry/filtered", Odometry, jackal_msg_callback, queue_size=20)
+    spot_state_sub = rospy.Subscriber("/odometry/filtered", Odometry, spot_msg_callback, queue_size=20)
     robot_state_pub = rospy.Publisher("/wild_visual_navigation_node/robot_state", RobotState, queue_size=20)
 
     # And also the twist command from teleoperation
-    ref_twist_sub = rospy.Subscriber("/jackal_velocity_controller/cmd_vel", Twist, twist_msg_callback, queue_size=20)
+    ref_twist_sub = rospy.Subscriber("/spot_velocity_controller/cmd_vel", Twist, twist_msg_callback, queue_size=20)
     ref_twiststamped_pub = rospy.Publisher("/wild_visual_navigation_node/reference_twist", TwistStamped, queue_size=20)
 
-    rospy.loginfo("[jackal_state_converter_node] ready")
+    rospy.loginfo("[spot_state_converter_node] ready")
     rospy.spin()
