@@ -70,11 +70,11 @@ if __name__ == "__main__":
     rospy.init_node("spot_state_converter_node")
 
     # We subscribe the odometry topic (state)
-    spot_state_sub = rospy.Subscriber("/odometry/filtered", Odometry, spot_msg_callback, queue_size=20)
+    spot_state_sub = rospy.Subscriber("/spot/odometry_corrected", Odometry, spot_msg_callback, queue_size=20)
     robot_state_pub = rospy.Publisher("/wild_visual_navigation_node/robot_state", RobotState, queue_size=20)
 
     # And also the twist command from teleoperation
-    ref_twist_sub = rospy.Subscriber("/spot_velocity_controller/cmd_vel", Twist, twist_msg_callback, queue_size=20)
+    ref_twist_sub = rospy.Subscriber("/spot/cmd_vel", Twist, twist_msg_callback, queue_size=20)
     ref_twiststamped_pub = rospy.Publisher("/wild_visual_navigation_node/reference_twist", TwistStamped, queue_size=20)
 
     rospy.loginfo("[spot_state_converter_node] ready")

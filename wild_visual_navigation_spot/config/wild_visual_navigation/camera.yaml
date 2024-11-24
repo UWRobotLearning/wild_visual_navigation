@@ -1,5 +1,7 @@
 camera_topics:
   front:
+    #image_topic: "/zed2/zed_node/rgb_raw/image_raw_color_throttle" #"/spot/camera/hand_color/image"
+    #info_topic: "/zed2/zed_node/rgb_raw/camera_info" #"/spot/camera/hand_color/camera_info"
     image_topic: "/spot/camera/hand_color/image"
     info_topic: "/spot/camera/hand_color/camera_info"
     use_for_training: true

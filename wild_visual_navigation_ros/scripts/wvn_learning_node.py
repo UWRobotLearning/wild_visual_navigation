@@ -926,7 +926,7 @@ class WvnLearning:
             stamp = rospy.Time(0)
 
         try:
-            res = self.tf_buffer.lookup_transform(parent_frame, child_frame, stamp, timeout=rospy.Duration(0.03))
+            res = self.tf_buffer.lookup_transform(parent_frame, child_frame, stamp, timeout=rospy.Duration(0.5))
             trans = (
                 res.transform.translation.x,
                 res.transform.translation.y,
@@ -944,7 +944,7 @@ class WvnLearning:
             return (trans, tuple(rot))
         except Exception:
             if self._ros_params.verbose:
-                # print("Error in query tf: ", e)
+                print("Error in query tf: ", e)
                 rospy.logwarn(f"[{self._node_name}] Couldn't get between {parent_frame} and {child_frame}")
             return (None, None)
 

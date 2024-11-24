@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>wild_visual_navigation_jackal</name>
+  <name>wild_visual_navigation_spot</name>
   <version>0.0.1</version>
   <description>Jackal simulation environment for wild_visual_navigation</description>
   <maintainer email="matias@robots.ox.ac.uk">Matias Mattamala</maintainer>

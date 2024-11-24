@@ -13,18 +13,18 @@ sudo apt-get update
 ```sh
 sudo apt update 
 sudo apt install -y \
-        ros-noetic-jackal-simulator \
-        ros-noetic-jackal-desktop
+        ros-noetic-spot-simulator \
+        ros-noetic-spot-desktop
 ```
 
 ## Running
 
 ```sh
-roslaunch wild_visual_navigation_jackal sim.launch
+roslaunch wild_visual_navigation_spot sim.launch
 ```
 
 ```sh
-roslaunch wild_visual_navigation_jackal wild_visual_navigation.launch
+roslaunch wild_visual_navigation_spot wild_visual_navigation.launch
 ```
 
 ## License

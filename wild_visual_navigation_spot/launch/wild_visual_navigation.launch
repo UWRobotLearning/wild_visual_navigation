@@ -11,7 +11,7 @@
     </include>
 
       <!-- spot state converter required by WVN -->
-  <node name="spot_state_converter_node" pkg="wild_visual_navigation_spot" type="spot_state_converter_node.py"/>
+  <node name="spot_state_converter_node" pkg="wild_visual_navigation_spot" type="spot_state_converter_node.py" output="screen"/>
 
   </launch>
   

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(wild_visual_navigation_jackal)
+project(wild_visual_navigation_spot)
 
 find_package(catkin REQUIRED COMPONENTS
   rospy
@@ -22,6 +22,6 @@ install(DIRECTORY launch Media worlds
 ## Python ##
 ############
 catkin_install_python(PROGRAMS scripts/carrot_follower.py
-                               scripts/jackal_state_converter_node.py
+                               scripts/spot_state_converter_node.py
                                scripts/gazebo_world_publisher.py
                       DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
