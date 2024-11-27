@@ -8,9 +8,9 @@ base_frame: base_link
 footprint_frame: base_link
 
 # Robot size used to project the footprint
-robot_length: 0.5
-robot_width: 0.3
-robot_height: 0.3
+robot_length: 1.1
+robot_width: 0.3 # Spot is closer to 40 but this may help get good supervision
+robot_height: 0.61
 
 
 # Traversability estimation parameters
@@ -46,7 +46,7 @@ load_save_checkpoint_rate: 1.0      # Rate at which checkpoints are saved / load
 
 # Runtime options
 device: "cuda"
-mode: "debug"                      # Options: "online", "debug", "extract_labels"; Sets operation mode of both nodes
+mode: "online"                      # Options: "online", "debug", "extract_labels"; Sets operation mode of both nodes
 colormap: "RdYlBu"
 
 print_image_callback_time: false

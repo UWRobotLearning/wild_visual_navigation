@@ -19,6 +19,7 @@ import rospy
 from sensor_msgs.msg import Image, CameraInfo, CompressedImage
 from std_msgs.msg import MultiArrayDimension
 
+import time
 import torch
 import numpy as np
 import torch.nn.functional as F
@@ -279,6 +280,7 @@ class WvnFeatureExtractor:
             info_msg (sensor_msgs/CameraInfo): Camera info message associated to the image
             cam (str): Camera name
         """
+        s = time.time()
         # Check the rate
         ts = image_msg.header.stamp.to_sec()
         if abs(ts - self._last_image_ts[cam]) < 1.0 / self._ros_params.image_callback_rate:
@@ -403,6 +405,7 @@ class WvnFeatureExtractor:
 
         # Step scheduler
         self._camera_scheduler.step()
+        print("\nEND FEATURES", time.time() - s)
 
     def load_model(self, stamp):
         """Method to load the new model weights to perform inference on the incoming images

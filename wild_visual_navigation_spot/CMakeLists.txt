@@ -24,4 +24,5 @@ install(DIRECTORY launch Media worlds
 catkin_install_python(PROGRAMS scripts/carrot_follower.py
                                scripts/spot_state_converter_node.py
                                scripts/gazebo_world_publisher.py
+                               scripts/twist_fixer.py
                       DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

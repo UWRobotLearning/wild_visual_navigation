@@ -25,7 +25,7 @@ class SupervisionGenerator:
         untraversable_thr,
         time_horizon,
         graph_max_length,
-    ):
+        ):
         """Generates traversability signals/labels from different sources
 
         Args:
@@ -39,12 +39,12 @@ class SupervisionGenerator:
         # Setup Kalman Filter to smooth signals
         D = 1
         self._kalman_filter_ = KalmanFilter(
-            dim_state=D,
-            dim_control=D,
-            dim_meas=D,
-            outlier_rejection=kf_outlier_rejection,
-            outlier_delta=kf_outlier_rejection_delta,
-        )
+                dim_state=D,
+                dim_control=D,
+                dim_meas=D,
+                outlier_rejection=kf_outlier_rejection,
+                outlier_delta=kf_outlier_rejection_delta,
+                )
 
         self._kalman_filter_.init_process_model(proc_model=torch.eye(D) * 1, proc_cov=torch.eye(D) * kf_process_cov)
         self._kalman_filter_.init_meas_model(meas_model=torch.eye(D), meas_cov=torch.eye(D) * kf_meas_cov)
@@ -85,12 +85,12 @@ class SupervisionGenerator:
         return torch.tensor(S)
 
     def update_velocity_tracking(
-        self,
-        current_velocity: torch.tensor,
-        desired_velocity: torch.tensor,
-        max_velocity: float = 1.0,
-        velocities: list = ["vx", "vy", "vz", "wx", "wy", "wz"],
-    ):
+            self,
+            current_velocity: torch.tensor,
+            desired_velocity: torch.tensor,
+            max_velocity: float = 1.0,
+            velocities: list = ["vx", "vy", "vz", "wx", "wy", "wz"],
+            ):
         """Generates an traversability signal using velocity tracking error
 
         Args:
@@ -117,8 +117,8 @@ class SupervisionGenerator:
         # We use negative argument to revert sigmoid (smaller errors -> 1.0) and stretch the errors
         self._traversability = torch.sigmoid(-(self._sigmoid_slope * (error - self._sigmoid_cutoff)))
         self._traversability_var = torch.tensor([1.0]).to(
-            self._traversability.device
-        )  # This needs to be improved, the KF can help
+                self._traversability.device
+                )  # This needs to be improved, the KF can help
 
         # Apply threshold to detect hard obstacles
         self._is_untraversable = (self._traversability < self._untraversable_thr).item()
@@ -128,22 +128,22 @@ class SupervisionGenerator:
         return self._traversability, self._traversability_var, self._is_untraversable
 
     def update_pose_prediction(
-        self,
-        timestamp: float,
-        current_pose_in_world: torch.tensor,
-        current_velocity: torch.tensor,
-        desired_velocity: torch.tensor,
-        velocities: list = ["vx", "vy", "vz", "wx", "wy", "wz"],
-    ):
+            self,
+            timestamp: float,
+            current_pose_in_world: torch.tensor,
+            current_velocity: torch.tensor,
+            desired_velocity: torch.tensor,
+            velocities: list = ["vx", "vy", "vz", "wx", "wy", "wz"],
+            ):
         # Save in twist graph
         self._graph_twist.add_node(
-            TwistNode(
-                timestamp=timestamp,
-                pose_in_world=current_pose_in_world,
-                desired_twist=desired_velocity,
-                current_twist=current_velocity,
-            )
-        )
+                TwistNode(
+                    timestamp=timestamp,
+                    pose_in_world=current_pose_in_world,
+                    desired_twist=desired_velocity,
+                    current_twist=current_velocity,
+                    )
+                )
         # Get all nodes within the time horizon
         nodes = self._graph_twist.get_nodes_within_timespan(t_ini=(timestamp - self._time_horizon), t_end=timestamp)
 

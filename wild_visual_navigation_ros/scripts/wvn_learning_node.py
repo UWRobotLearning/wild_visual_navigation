@@ -3,6 +3,7 @@
 # All rights reserved. Licensed under the MIT license.
 # See LICENSE file in the project root for details.
 #
+import time
 from wild_visual_navigation import WVN_ROOT_DIR
 from wild_visual_navigation.image_projector import ImageProjector
 from wild_visual_navigation.supervision_generator import SupervisionGenerator
@@ -268,7 +269,7 @@ class WvnLearning:
                     info_sub = message_filters.Subscriber(f"/wild_visual_navigation_node/{cam}/camera_info", CameraInfo)
                     image_sub = message_filters.Subscriber(f"/wild_visual_navigation_node/{cam}/image_input", Image)
                     sync = message_filters.ApproximateTimeSynchronizer(
-                        [imagefeat_sub, info_sub, image_sub], queue_size=4, slop=0.5
+                        [imagefeat_sub, info_sub, image_sub], queue_size=1, slop=0.5
                     )
                     sync.registerCallback(self.imagefeat_callback, self._ros_params.camera_topics[cam])
 
@@ -282,7 +283,6 @@ class WvnLearning:
                     self._camera_handler[cam]["debug"]["image_overlay"] = last_image_overlay_pub
 
                 else:
-                    print(f"/wild_visual_navigation_node/{cam}/feat")
                     imagefeat_sub = message_filters.Subscriber(
                         f"/wild_visual_navigation_node/{cam}/feat", ImageFeatures
                     )
@@ -555,6 +555,7 @@ class WvnLearning:
             imagefeat_msg (wild_visual_navigation_msg/ImageFeatures): Incoming imagefeatures
             info_msg (sensor_msgs/CameraInfo): Camera info message associated to the image
         """
+        s = time.time()
         if not self._setup_ready:
             return
 
@@ -667,7 +668,10 @@ class WvnLearning:
                 if added_new_node:
                     self._traversability_estimator.update_visualization_node()
 
-                self.visualize_mission_graph()
+            print("\nEND graph: ", time.time() - s)
+            s = time.time()
+            self.visualize_mission_graph()
+            print("\nVIZ", time.time() - s)
 
             # Print callback time if required
             if self._ros_params.print_image_callback_time:
@@ -926,7 +930,7 @@ class WvnLearning:
             stamp = rospy.Time(0)
 
         try:
-            res = self.tf_buffer.lookup_transform(parent_frame, child_frame, stamp, timeout=rospy.Duration(0.5))
+            res = self.tf_buffer.lookup_transform(parent_frame, child_frame, stamp, timeout=rospy.Duration(0.03))
             trans = (
                 res.transform.translation.x,
                 res.transform.translation.y,
@@ -944,7 +948,6 @@ class WvnLearning:
             return (trans, tuple(rot))
         except Exception:
             if self._ros_params.verbose:
-                print("Error in query tf: ", e)
                 rospy.logwarn(f"[{self._node_name}] Couldn't get between {parent_frame} and {child_frame}")
             return (None, None)
 
